@@ -1,18 +1,273 @@
-<script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Husky Sips | Hillcrest High School</title>
+  <style>
+    :root{
+      --green-900:#153328; --green-800:#1f4c39; --green-700:#2f6b4f;
+      --green-600:#4b8b69; --green-500:#6aa483; --green-100:#ebf6ef;
+      --green-050:#f7fbf8; --cream:#fffdf8; --white:#ffffff;
+      --text:#24352d; --muted:#66776f; --shadow:0 14px 36px rgba(18,45,33,.10);
+      --radius-xl:34px; --radius-lg:26px; --radius-md:20px;
+    }
+
+    *{box-sizing:border-box; margin:0; padding:0}
+    html{scroll-behavior:smooth; overflow-y: auto;} 
+    
+    body{
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: radial-gradient(circle at top right, rgba(106,164,131,.09), transparent 26%), var(--green-050);
+      color:var(--text); line-height:1.6; min-height: 100vh;
+    }
+
+    .container{width:min(1180px, calc(100% - 32px)); margin:0 auto}
+    section{padding:60px 0; clear: both; display: block;}
+
+    /* Navigation */
+    header{
+      position:sticky; top:0; z-index:1000;
+      background:rgba(255,255,255,.92); backdrop-filter:blur(14px);
+      border-bottom:1px solid rgba(47,107,79,.08);
+    }
+    .nav{min-height:80px; display:flex; align-items:center; justify-content:space-between;}
+    .brand-mark{width:50px; height:50px; border-radius:15px; background:linear-gradient(135deg, var(--green-700), var(--green-500)); color:#fff; display:grid; place-items:center; font-weight:900;}
+    nav ul{list-style:none; display:flex; gap:10px;}
+    nav a{padding:10px 14px; border-radius:999px; font-weight:700; color:var(--green-800); text-decoration:none; transition: 0.2s;}
+    nav a:hover{background:var(--green-100)}
+
+    /* Hero & Featured */
+    .hero-shell{display:grid; grid-template-columns:1.08fr .92fr; gap:24px; align-items: start;}
+    .hero-card{
+      min-height:450px; border-radius: var(--radius-xl); padding:48px; color: #fff;
+      background: linear-gradient(rgba(17,45,33,.68), rgba(47,107,79,.56)), url("https://imagescdn.homes.com/i2/4x_LurS3yFl8nBL4HXImB5FQkXE__u1H0Dl1XiHseyQ/117/hillcrest-high-school-midvale-ut-primaryphoto.jpg?p=1") center/cover;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+
+    .featured-banner{background:linear-gradient(135deg, var(--cream), #edf7f1); border:1px solid rgba(47,107,79,.08); border-radius:28px; padding:24px; box-shadow:var(--shadow);}
+    .pill{padding:6px 12px; border-radius:999px; background:var(--green-100); color:var(--green-800); font-weight:800; font-size:.8rem;}
+    .drink-spotlight{display:grid; grid-template-columns:110px 1fr; gap:16px; align-items:center; margin-top:15px;}
+    .drink-photo{width:110px; height:140px; border-radius:22px; background-size:cover; background-position:center; background-color:#e0eadd;}
+
+    /* Menu Layout */
+    .menu-layout{display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:30px;}
+    .panel{background:#fff; border-radius:30px; padding:28px; box-shadow:var(--shadow); height: fit-content;}
+    .panel-title{font-size:1.5rem; margin-bottom:20px; color:var(--green-900); border-bottom:2px solid var(--green-100); padding-bottom:10px;}
+    
+    .group{border:1px solid rgba(47,107,79,.10); border-radius:22px; overflow:hidden; margin-bottom:20px;}
+    .group-head{background:var(--green-050); color:var(--green-800); font-weight:900; padding:12px 18px; font-size:0.9rem; text-transform: uppercase;}
+    .item{display:flex; justify-content:space-between; padding:12px 18px; border-bottom:1px solid rgba(47,107,79,.08); font-size: 0.95rem;}
+    .item:last-child{border-bottom: none;}
+
+    /* Chips & BYO */
+    .chip-list{display:flex; flex-wrap:wrap; gap:8px; padding:15px;}
+    .chip{padding:6px 12px; border-radius:999px; background:var(--green-100); color:var(--green-800); font-weight:700; font-size:0.8rem;}
+    .price-tag{font-weight: 800; color: var(--green-700); padding: 0 15px 15px;}
+
+    /* Gallery */
+    .gallery-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:18px; margin-top:20px;}
+    .gallery-card{background:#fff; border-radius:24px; overflow:hidden; box-shadow:var(--shadow);}
+    .gallery-img{height:200px; background-size:cover; background-position:center;}
+
+    /* Request Section */
+    .request-card{display:grid; grid-template-columns:1fr 1fr; border-radius:32px; overflow:hidden; box-shadow:var(--shadow); background:#fff;}
+    .request-visual{padding:40px; background:linear-gradient(rgba(33,81,59,0.85), rgba(33,81,59,0.85)), url('https://png.pngtree.com/thumb_back/fh260/background/20210702/pngtree-black-with-dark-green-marble-background-liquid-texture-image_736590.jpg') center/cover; color:#fff;}
+    .btn-white{background:#fff; color:var(--green-900); padding:12px 24px; border-radius:999px; font-weight:800; display:inline-block; margin-top:15px; text-decoration:none;}
+
+    /* Hours */
+    .hours-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:18px;}
+    .hour-box{background:#fff; border-radius:24px; padding:24px; box-shadow:var(--shadow); text-align:center;}
+
+    @media (max-width:900px){ .hero-shell, .menu-layout, .gallery-grid, .request-card, .hours-grid {grid-template-columns:1fr;} }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="brand-mark">HS</div>
+        <div style="margin-left:12px">
+          <h1 style="font-size:1.1rem; line-height:1">HUSKY SIPS</h1>
+          <p style="font-size:0.7rem; color:var(--muted);">Hillcrest High School</p>
+        </div>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#gallery">Favorites</a></li>
+          <li><a href="#request">Request</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="container">
+      <div class="hero-shell">
+        <div class="hero-card">
+          <h2 style="font-size: 3.8rem; line-height: 1">HUSKY SIPS</h2>
+          <p style="font-size: 1.2rem; margin: 15px 0">Hillcrest's destination for custom dirty sodas.</p>
+          <a href="#menu" class="btn-white">See Full Menu</a>
+        </div>
+
+        <div class="hero-side">
+          <div class="featured-banner">
+            <div class="featured-top">
+              <span class="pill">Featured Drink</span>
+              <span class="pill" id="feat-tag">Drink Type</span>
+            </div>
+            <div class="drink-spotlight">
+              <div id="feat-img" class="drink-photo"></div>
+              <div>
+                <h4 id="feat-name" style="font-size:1.5rem; color:var(--green-900);">Loading...</h4>
+                <p id="feat-desc" style="color:var(--muted); font-size:0.9rem;">Description</p>
+                <div id="feat-note" style="color:var(--green-700); font-weight:700; margin-top:5px; font-size:0.85rem;">Note</div>
+              </div>
+            </div>
+          </div>
+          
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:20px;">
+            <div class="panel" style="padding:15px; text-align:center;"><p style="font-size:0.7rem; font-weight:700;">OPEN DAYS</p><strong>Tue & Wed</strong></div>
+            <div class="panel" style="padding:15px; text-align:center;"><p style="font-size:0.7rem; font-weight:700;">PEAK TIME</p><strong>2nd Period</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="menu" class="container">
+      <h2 style="margin-bottom:20px; color:var(--green-900);">Signature Menu</h2>
+      <div class="menu-layout">
+        <div class="panel">
+          <h4 class="panel-title">Signature Drinks</h4>
+          <div class="group">
+            <div class="group-head">Dr Pepper / Diet Dr Pepper</div>
+            <div class="item"><strong>Texan</strong><span>Vanilla, Coconut Cream</span></div>
+            <div class="item"><strong>The OG</strong><span>Coconut</span></div>
+            <div class="item"><strong>Ms Peachy</strong><span>Vanilla, Peach, Vanilla Cream</span></div>
+            <div class="item"><strong>Bleed Green</strong><span>Raspberry Puree, Coconut Cream</span></div>
+            <div class="item"><strong>Harvey’s Secret</strong><span>Coconut, Pineapple, Vanilla Cream</span></div>
+          </div>
+          <div class="group">
+            <div class="group-head">Coke / Diet Coke</div>
+            <div class="item"><strong>The McCann</strong><span>Fresh Lime, Coconut</span></div>
+            <div class="item"><strong>Beachy</strong><span>Raspberry, Peach, Vanilla Cream</span></div>
+            <div class="item"><strong>Peaches and Limes</strong><span>Fresh Lime, Peach, Pineapple, Coconut Cream</span></div>
+          </div>
+          <div class="group">
+            <div class="group-head">Sprite</div>
+            <div class="item"><strong>Shark Bite</strong><span>Blue Raspberry, Gummy Shark</span></div>
+            <div class="item"><strong>Hula Harvey</strong><span>Mango, Pineapple, Strawberry, Coconut Cream</span></div>
+            <div class="item"><strong>High Tide</strong><span>Raspberry Puree, Fresh Lime</span></div>
+            <div class="item"><strong>Watermelon Rush</strong><span>Watermelon, Mango, Coconut Cream</span></div>
+            <div class="item"><strong>Dawg Pound</strong><span>Strawberry Puree, Mango Puree</span></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h4 class="panel-title">Build Your Own</h4>
+          <div class="group">
+            <div class="group-head">Syrups</div>
+            <div class="chip-list">
+              <div class="chip">Blue Raspberry</div><div class="chip">Raspberry</div>
+              <div class="chip">Strawberry</div><div class="chip">Peach</div>
+              <div class="chip">Watermelon</div><div class="chip">Pineapple</div>
+              <div class="chip">Coconut</div><div class="chip">SF Coconut</div>
+              <div class="chip">Vanilla</div><div class="chip">SF Vanilla</div>
+            </div>
+          </div>
+          <div class="group">
+            <div class="group-head">Creams & Purees</div>
+            <div class="chip-list">
+              <div class="chip">Coconut Cream</div><div class="chip">Vanilla Cream</div>
+              <div class="chip">Fresh Lime</div><div class="chip">Raspberry Puree</div>
+              <div class="chip">Mango Puree</div><div class="chip">Strawberry Puree</div>
+            </div>
+            <div class="price-tag">Add-ons: 40¢ each</div>
+          </div>
+          <div style="background:var(--green-050); padding:20px; border-radius:20px;">
+            <h5 style="color:var(--green-800)">Custom Mixes</h5>
+            <p style="font-size:0.85rem; color:var(--muted);">Pick your base soda and layer any combination of flavors above!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="gallery" class="container">
+      <h2 style="margin-bottom:20px;">Customer Favorites</h2>
+      <div class="gallery-grid">
+        <div class="gallery-card">
+          <div class="gallery-img" style="background-image:url('https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=500');"></div>
+          <div style="padding:15px;"><h4>Dirty Classics</h4></div>
+        </div>
+        <div class="gallery-card">
+          <div class="gallery-img" style="background-image:url('https://as2.ftcdn.net/jpg/02/82/94/45/1000_F_282944586_bFlWGsstSoakkIWZcx3RazQBPDVTrgqI.jpg');"></div>
+          <div style="padding:15px;"><h4>Puree Blasts</h4></div>
+        </div>
+        <div class="gallery-card">
+          <div class="gallery-img" style="background-image:url('https://www.kombikeg.com/wp-content/uploads/2025/09/dirty-soda-lineup-1024x538.png');"></div>
+          <div style="padding:15px;"><h4>The Lineup</h4></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="request" class="container">
+      <div class="request-card">
+        <div class="request-visual">
+          <h2>Got a new flavor idea?</h2>
+          <p>We want to hear your creative soda combinations!</p>
+          <a href="https://forms.gle/VJYMMPbKk6qtJPB19" target="_blank" class="btn-white">Submit Request</a>
+        </div>
+        <div style="padding:40px; display:flex; flex-direction:column; justify-content:center;">
+          <h4 style="color:var(--green-900);">Help Grow Our Menu</h4>
+          <p style="color:var(--muted); margin-top:10px;">The best student recipes often become permanent on our signature menu.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="hours" class="container">
+      <div class="hours-grid">
+        <div class="hour-box"><h5>SCHOOL</h5><p>Hillcrest High</p></div>
+        <div class="hour-box"><h5>DAYS</h5><p>Tue & Wed</p></div>
+        <div class="hour-box"><h5>PEAK</h5><p>2nd Period</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer style="padding:40px 0; text-align:center; border-top:1px solid rgba(0,0,0,0.05); color:var(--muted);">
+    <p>&copy; 2026 Husky Sips · Hillcrest High Business Club</p>
+  </footer>
+
+  <script>
+    // FULL DRINK DATA FOR THE FEATURED SECTION
     const drinks = [
-        'Coke',
-        'Sprite',
-        'Fanta',
-        'Monster',
-        'Red Bull',
-        'Coffee',
-        'Tea',
-        'Lemonade',
-        'Water',
-        'Iced Tea',
-        'Milkshake',
-        'Smoothie',
-        'Juice'
+      { name: "Texan", desc: "Vanilla, Coconut Cream", note: "Classic combo.", tag: "Dr Pepper Base", img: "https://images.unsplash.com/photo-1543253687-c931c8e01820?auto=format&fit=crop&w=500" },
+      { name: "The OG", desc: "Coconut", note: "Simple and smooth.", tag: "Dr Pepper Base", img: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=500" },
+      { name: "Ms Peachy", desc: "Vanilla, Peach, Vanilla Cream", note: "Sweet and creamy.", tag: "Dr Pepper Base", img: "https://images.unsplash.com/photo-1595981267035-7b04ca84a82d?auto=format&fit=crop&w=500" },
+      { name: "Bleed Green", desc: "Raspberry Puree, Coconut Cream", note: "The Hillcrest original.", tag: "Student Favorite", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQk40KW-HiTJknL-EVvKYcIBzPQPPFqJEI60w&s" },
+      { name: "Harvey’s Secret", desc: "Coconut, Pineapple, Vanilla Cream", note: "Tropical vibes.", tag: "Dr Pepper Base", img: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=500" },
+      { name: "The McCann", desc: "Fresh Lime, Coconut", note: "Citrus meets coconut.", tag: "Coke Base", img: "https://images.unsplash.com/photo-1554866585-cd94860890b7?auto=format&fit=crop&w=500" },
+      { name: "Beachy", desc: "Raspberry, Peach, Vanilla Cream", note: "Summer in a cup.", tag: "Coke Base", img: "https://images.unsplash.com/photo-1499638673689-79a0b5115d87?auto=format&fit=crop&w=500" },
+      { name: "Peaches and Limes", desc: "Fresh Lime, Peach, Pineapple, Coconut Cream", note: "Tangy and tropical.", tag: "Coke Base", img: "https://images.unsplash.com/photo-1536935338788-846bb9981813?auto=format&fit=crop&w=500" },
+      { name: "Shark Bite", desc: "Blue Raspberry, Gummy Shark", note: "Fun and fruity.", tag: "Sprite Base", img: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=500" },
+      { name: "Hula Harvey", desc: "Mango, Pineapple, Strawberry, Coconut Cream", note: "A tropical vacation.", tag: "Sprite Base", img: "https://as2.ftcdn.net/jpg/02/82/94/45/1000_F_282944586_bFlWGsstSoakkIWZcx3RazQBPDVTrgqI.jpg" },
+      { name: "High Tide", desc: "Raspberry Puree, Fresh Lime", note: "Refreshing berry.", tag: "Sprite Base", img: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=500" },
+      { name: "Watermelon Rush", desc: "Watermelon, Mango, Coconut Cream", note: "Crisp and fresh.", tag: "Sprite Base", img: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=500" },
+      { name: "Dawg Pound", desc: "Strawberry Puree, Mango Puree", note: "Double fruit blast.", tag: "Sprite Base", img: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=500" }
     ];
-    let featuredIndex = 0;
-</script>
+
+    /** * CHANGE FEATURED DRINK HERE (0-12) */
+    let featuredIndex = 3; // 3 is Bleed Green
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const d = drinks[featuredIndex];
+      document.getElementById('feat-name').textContent = d.name;
+      document.getElementById('feat-desc').textContent = d.desc;
+      document.getElementById('feat-note').textContent = d.note;
+      document.getElementById('feat-tag').textContent = d.tag;
+      document.getElementById('feat-img').style.backgroundImage = `url('${d.img}')`;
+    });
+  </script>
+</body>
+</html>
