@@ -564,6 +564,7 @@
 
     // ===================== CART STATE =====================
     var cart = [];
+    var cartIdCounter = 0;
     var modalDrink = null;
     var modalSelectedBase = '';
     var modalSelectedAddons = [];
@@ -733,7 +734,7 @@
 
     // ===================== CART =====================
     function addToCart(name, detail, price) {
-      cart.push({ name: name, detail: detail, price: price, id: Date.now() + Math.random() });
+      cart.push({ name: name, detail: detail, price: price, id: ++cartIdCounter });
       renderTray();
       var btn = document.getElementById('open-tray');
       btn.style.transform = 'scale(1.15)';
