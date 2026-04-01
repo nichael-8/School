@@ -14,8 +14,8 @@
     }
 
     *{box-sizing:border-box; margin:0; padding:0}
-    html{scroll-behavior:smooth; overflow-y: auto;} 
-    
+    html{scroll-behavior:smooth; overflow-y:auto;}
+
     body{
       font-family: 'Segoe UI', Arial, sans-serif;
       background: radial-gradient(circle at top right, rgba(106,164,131,.09), transparent 26%), var(--green-050);
@@ -33,9 +33,22 @@
     }
     .nav{min-height:80px; display:flex; align-items:center; justify-content:space-between;}
     .brand-mark{width:50px; height:50px; border-radius:15px; background:linear-gradient(135deg, var(--green-700), var(--green-500)); color:#fff; display:grid; place-items:center; font-weight:900;}
-    nav ul{list-style:none; display:flex; gap:10px;}
+    nav ul{list-style:none; display:flex; gap:10px; align-items:center;}
     nav a{padding:10px 14px; border-radius:999px; font-weight:700; color:var(--green-800); text-decoration:none; transition: 0.2s;}
     nav a:hover{background:var(--green-100)}
+
+    /* Cart button */
+    .cart-btn{
+      position:relative; background:var(--green-700); color:#fff; border:none;
+      padding:10px 18px; border-radius:999px; font-weight:800; font-size:0.9rem;
+      cursor:pointer; display:flex; align-items:center; gap:6px; transition:background 0.2s, transform 0.2s;
+    }
+    .cart-btn:hover{background:var(--green-800);}
+    .cart-count{
+      background:#fff; color:var(--green-800); border-radius:999px;
+      min-width:20px; height:20px; display:inline-flex; align-items:center; justify-content:center;
+      font-size:0.75rem; font-weight:900; padding:0 4px;
+    }
 
     /* Hero & Featured */
     .hero-shell{display:grid; grid-template-columns:1.08fr .92fr; gap:24px; align-items: start;}
@@ -54,16 +67,54 @@
     .menu-layout{display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:30px;}
     .panel{background:#fff; border-radius:30px; padding:28px; box-shadow:var(--shadow); height: fit-content;}
     .panel-title{font-size:1.5rem; margin-bottom:20px; color:var(--green-900); border-bottom:2px solid var(--green-100); padding-bottom:10px;}
-    
+
     .group{border:1px solid rgba(47,107,79,.10); border-radius:22px; overflow:hidden; margin-bottom:20px;}
     .group-head{background:var(--green-050); color:var(--green-800); font-weight:900; padding:12px 18px; font-size:0.9rem; text-transform: uppercase;}
-    .item{display:flex; justify-content:space-between; padding:12px 18px; border-bottom:1px solid rgba(47,107,79,.08); font-size: 0.95rem;}
-    .item:last-child{border-bottom: none;}
+
+    /* Clickable menu items */
+    .item{
+      display:flex; justify-content:space-between; align-items:center;
+      padding:10px 18px; border-bottom:1px solid rgba(47,107,79,.08); font-size:0.95rem;
+      cursor:pointer; transition:background 0.15s;
+    }
+    .item:last-child{border-bottom:none;}
+    .item:hover{background:var(--green-050);}
+    .item-info{flex:1;}
+    .item-info strong{display:block;}
+    .item-info span{font-size:0.85rem; color:var(--muted);}
+    .item-add-btn{
+      background:var(--green-700); color:#fff; border:none; border-radius:999px;
+      width:28px; height:28px; font-size:1.1rem; font-weight:900; cursor:pointer;
+      display:flex; align-items:center; justify-content:center; flex-shrink:0;
+      transition:background 0.15s; margin-left:10px;
+    }
+    .item-add-btn:hover{background:var(--green-800);}
 
     /* Chips & BYO */
     .chip-list{display:flex; flex-wrap:wrap; gap:8px; padding:15px;}
-    .chip{padding:6px 12px; border-radius:999px; background:var(--green-100); color:var(--green-800); font-weight:700; font-size:0.8rem;}
-    .price-tag{font-weight: 800; color: var(--green-700); padding: 0 15px 15px;}
+    .chip{
+      padding:6px 12px; border-radius:999px; background:var(--green-100); color:var(--green-800);
+      font-weight:700; font-size:0.8rem; cursor:pointer; transition:background 0.15s, color 0.15s;
+      user-select:none;
+    }
+    .chip:hover{background:var(--green-500); color:#fff;}
+    .chip.selected{background:var(--green-700); color:#fff;}
+    .chip.base-chip{background:#e8f4ec; border:2px solid transparent;}
+    .chip.base-chip.selected{background:var(--green-700); color:#fff; border-color:var(--green-900);}
+    .price-tag{font-weight:800; color:var(--green-700); padding:0 15px 15px;}
+
+    /* BYO builder */
+    .byo-total{
+      background:var(--green-050); border-radius:16px; padding:14px 18px;
+      display:flex; justify-content:space-between; align-items:center; margin-top:10px;
+    }
+    .byo-total-price{font-size:1.2rem; font-weight:900; color:var(--green-700);}
+    .btn-green{
+      background:var(--green-700); color:#fff; border:none; border-radius:999px;
+      padding:10px 20px; font-weight:800; font-size:0.9rem; cursor:pointer; transition:background 0.2s;
+    }
+    .btn-green:hover{background:var(--green-800);}
+    .btn-green:disabled{background:var(--muted); cursor:not-allowed;}
 
     /* Gallery */
     .gallery-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:18px; margin-top:20px;}
@@ -79,6 +130,125 @@
     .hours-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:18px;}
     .hour-box{background:#fff; border-radius:24px; padding:24px; box-shadow:var(--shadow); text-align:center;}
 
+    /* ===== ORDER TRAY ===== */
+    .tray-overlay{
+      position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:1100;
+      display:none; justify-content:flex-end;
+    }
+    .tray-overlay.open{display:flex;}
+    .tray{
+      width:min(420px, 100vw); background:#fff; height:100vh; overflow-y:auto;
+      display:flex; flex-direction:column; box-shadow:-4px 0 40px rgba(0,0,0,.15);
+    }
+    .tray-header{
+      padding:24px; border-bottom:1px solid var(--green-100);
+      display:flex; justify-content:space-between; align-items:center;
+      position:sticky; top:0; background:#fff;
+    }
+    .tray-header h3{font-size:1.3rem; color:var(--green-900);}
+    .tray-close{background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--muted); line-height:1;}
+    .tray-items{flex:1; padding:16px;}
+    .tray-empty{text-align:center; color:var(--muted); padding:40px 20px; font-size:0.95rem;}
+    .tray-item{
+      display:flex; justify-content:space-between; align-items:flex-start;
+      padding:12px 0; border-bottom:1px solid var(--green-100);
+    }
+    .tray-item-info{flex:1;}
+    .tray-item-name{font-weight:700; color:var(--green-900);}
+    .tray-item-detail{font-size:0.8rem; color:var(--muted); margin-top:2px;}
+    .tray-item-price{font-weight:800; color:var(--green-700); white-space:nowrap; margin-left:10px;}
+    .tray-item-remove{
+      background:none; border:none; color:var(--muted); font-size:1.1rem;
+      cursor:pointer; margin-left:8px; line-height:1; padding:2px;
+    }
+    .tray-item-remove:hover{color:#c0392b;}
+    .tray-footer{
+      padding:20px; border-top:2px solid var(--green-100);
+      position:sticky; bottom:0; background:#fff;
+    }
+    .tray-total{display:flex; justify-content:space-between; margin-bottom:14px; font-size:1.1rem;}
+    .tray-total-price{font-weight:900; color:var(--green-900); font-size:1.3rem;}
+    .btn-receipt{
+      width:100%; background:var(--green-700); color:#fff; border:none; border-radius:999px;
+      padding:14px; font-size:1rem; font-weight:800; cursor:pointer; transition:background 0.2s;
+    }
+    .btn-receipt:hover{background:var(--green-800);}
+    .btn-receipt:disabled{background:var(--muted); cursor:not-allowed;}
+    .btn-clear{
+      width:100%; background:none; color:var(--muted); border:1px solid var(--green-100);
+      border-radius:999px; padding:10px; font-size:0.9rem; font-weight:700; cursor:pointer;
+      margin-top:8px; transition:background 0.2s;
+    }
+    .btn-clear:hover{background:var(--green-050);}
+
+    /* ===== CUSTOMIZATION MODAL ===== */
+    .modal-overlay{
+      position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:1200;
+      display:none; align-items:center; justify-content:center; padding:20px;
+    }
+    .modal-overlay.open{display:flex;}
+    .modal{
+      background:#fff; border-radius:var(--radius-lg); padding:32px;
+      width:min(500px, 100%); max-height:90vh; overflow-y:auto;
+      box-shadow:0 24px 64px rgba(0,0,0,.2);
+    }
+    .modal-title{font-size:1.4rem; color:var(--green-900); margin-bottom:6px;}
+    .modal-desc{color:var(--muted); font-size:0.9rem; margin-bottom:20px;}
+    .modal-section{margin-bottom:20px;}
+    .modal-section-label{font-weight:800; color:var(--green-800); font-size:0.85rem; text-transform:uppercase; margin-bottom:10px;}
+    .modal-bases{display:flex; flex-wrap:wrap; gap:8px;}
+    .modal-addons{display:flex; flex-wrap:wrap; gap:8px;}
+    .modal-footer{display:flex; gap:10px; margin-top:24px;}
+    .btn-cancel{
+      flex:1; background:none; border:1px solid var(--green-100); color:var(--muted);
+      border-radius:999px; padding:12px; font-weight:700; cursor:pointer; transition:background 0.2s;
+    }
+    .btn-cancel:hover{background:var(--green-050);}
+    .btn-confirm{
+      flex:2; background:var(--green-700); color:#fff; border:none; border-radius:999px;
+      padding:12px; font-weight:800; cursor:pointer; font-size:0.95rem; transition:background 0.2s;
+    }
+    .btn-confirm:hover{background:var(--green-800);}
+    .modal-price{font-size:1.1rem; font-weight:900; color:var(--green-700); margin-top:10px;}
+
+    /* ===== RECEIPT MODAL ===== */
+    .receipt-overlay{
+      position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:1300;
+      display:none; align-items:center; justify-content:center; padding:20px;
+    }
+    .receipt-overlay.open{display:flex;}
+    .receipt{
+      background:#fff; border-radius:var(--radius-lg); padding:32px;
+      width:min(400px, 100%); max-height:90vh; overflow-y:auto;
+      box-shadow:0 24px 64px rgba(0,0,0,.25); font-family:'Courier New', monospace;
+    }
+    .receipt-header{text-align:center; padding-bottom:16px; border-bottom:2px dashed #ccc; margin-bottom:16px;}
+    .receipt-header h2{font-size:1.5rem; color:var(--green-900);}
+    .receipt-header p{color:var(--muted); font-size:0.8rem;}
+    .receipt-item{display:flex; justify-content:space-between; padding:5px 0; font-size:0.9rem;}
+    .receipt-item-detail{font-size:0.75rem; color:var(--muted); padding:0 0 5px 10px;}
+    .receipt-divider{border:none; border-top:1px dashed #ccc; margin:12px 0;}
+    .receipt-total{display:flex; justify-content:space-between; font-weight:900; font-size:1.1rem; padding:8px 0;}
+    .receipt-footer{text-align:center; margin-top:16px; padding-top:16px; border-top:2px dashed #ccc; font-size:0.8rem; color:var(--muted);}
+    .receipt-actions{display:flex; gap:10px; margin-top:20px; font-family:'Segoe UI', Arial, sans-serif;}
+    .btn-screenshot{
+      flex:1; background:var(--green-700); color:#fff; border:none; border-radius:999px;
+      padding:12px; font-weight:800; cursor:pointer; transition:background 0.2s;
+    }
+    .btn-screenshot:hover{background:var(--green-800);}
+    .btn-close-receipt{
+      flex:1; background:none; border:1px solid var(--green-100); color:var(--muted);
+      border-radius:999px; padding:12px; font-weight:700; cursor:pointer; transition:background 0.2s;
+    }
+    .btn-close-receipt:hover{background:var(--green-050);}
+
+    @media print {
+      body > *:not(.receipt-overlay) { display:none; }
+      .receipt-overlay { display:flex !important; position:static; background:none; padding:0; }
+      .receipt { box-shadow:none; max-height:none; }
+      .receipt-actions { display:none !important; }
+    }
+
     @media (max-width:900px){ .hero-shell, .menu-layout, .gallery-grid, .request-card, .hours-grid {grid-template-columns:1fr;} }
   </style>
 </head>
@@ -86,7 +256,7 @@
 
   <header>
     <div class="container nav">
-      <div class="brand">
+      <div class="brand" style="display:flex; align-items:center;">
         <div class="brand-mark">HS</div>
         <div style="margin-left:12px">
           <h1 style="font-size:1.1rem; line-height:1">HUSKY SIPS</h1>
@@ -98,10 +268,79 @@
           <li><a href="#menu">Menu</a></li>
           <li><a href="#gallery">Favorites</a></li>
           <li><a href="#request">Request</a></li>
+          <li>
+            <button class="cart-btn" id="open-tray" aria-label="Open order tray">
+              &#x1F6D2; Order Tray <span class="cart-count" id="cart-count">0</span>
+            </button>
+          </li>
         </ul>
       </nav>
     </div>
   </header>
+
+  <!-- ORDER TRAY -->
+  <div class="tray-overlay" id="tray-overlay" role="dialog" aria-modal="true" aria-label="Order tray">
+    <div class="tray">
+      <div class="tray-header">
+        <h3>&#x1F6D2; Your Order</h3>
+        <button class="tray-close" id="close-tray" aria-label="Close tray">&#x2715;</button>
+      </div>
+      <div class="tray-items" id="tray-items">
+        <div class="tray-empty">Your tray is empty.<br>Click any drink to add it!</div>
+      </div>
+      <div class="tray-footer">
+        <div class="tray-total">
+          <span>Total</span>
+          <span class="tray-total-price" id="tray-total">$0.00</span>
+        </div>
+        <button class="btn-receipt" id="btn-receipt" disabled>&#x1F4C4; Generate Receipt</button>
+        <button class="btn-clear" id="btn-clear">Clear Order</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CUSTOMIZATION MODAL -->
+  <div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-label="Customize drink">
+    <div class="modal">
+      <h2 class="modal-title" id="modal-drink-name">Customize Drink</h2>
+      <p class="modal-desc" id="modal-drink-desc">Choose your base and add-ons.</p>
+      <div class="modal-section">
+        <div class="modal-section-label">Base Soda</div>
+        <div class="modal-bases" id="modal-bases"></div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-label">Add-ons <span style="font-weight:400; color:var(--muted);">(40&#162; each)</span></div>
+        <div class="modal-addons" id="modal-addons"></div>
+      </div>
+      <div class="modal-price" id="modal-price">Add-ons: $0.00</div>
+      <div class="modal-footer">
+        <button class="btn-cancel" id="modal-cancel">Cancel</button>
+        <button class="btn-confirm" id="modal-confirm">Add to Tray</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECEIPT MODAL -->
+  <div class="receipt-overlay" id="receipt-overlay" role="dialog" aria-modal="true" aria-label="Your receipt">
+    <div class="receipt" id="receipt-content">
+      <div class="receipt-header">
+        <h2>HUSKY SIPS</h2>
+        <p>Hillcrest High School &middot; Business Club</p>
+        <p id="receipt-date"></p>
+      </div>
+      <div id="receipt-items"></div>
+      <hr class="receipt-divider">
+      <div class="receipt-total">
+        <span>TOTAL</span>
+        <span id="receipt-total-price">$0.00</span>
+      </div>
+      <div class="receipt-footer">Show this receipt to the barista &#x1F64C;<br>Thank you for your order!</div>
+      <div class="receipt-actions">
+        <button class="btn-screenshot" id="btn-screenshot">&#x1F4F8; Screenshot</button>
+        <button class="btn-close-receipt" id="btn-close-receipt">Close</button>
+      </div>
+    </div>
+  </div>
 
   <main>
     <section class="container">
@@ -127,9 +366,9 @@
               </div>
             </div>
           </div>
-          
+
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:20px;">
-            <div class="panel" style="padding:15px; text-align:center;"><p style="font-size:0.7rem; font-weight:700;">OPEN DAYS</p><strong>Tue & Wed</strong></div>
+            <div class="panel" style="padding:15px; text-align:center;"><p style="font-size:0.7rem; font-weight:700;">OPEN DAYS</p><strong>Tue &amp; Wed</strong></div>
             <div class="panel" style="padding:15px; text-align:center;"><p style="font-size:0.7rem; font-weight:700;">PEAK TIME</p><strong>2nd Period</strong></div>
           </div>
         </div>
@@ -137,58 +376,119 @@
     </section>
 
     <section id="menu" class="container">
-      <h2 style="margin-bottom:20px; color:var(--green-900);">Signature Menu</h2>
+      <h2 style="margin-bottom:10px; color:var(--green-900);">Signature Menu</h2>
+      <p style="color:var(--muted); margin-bottom:20px; font-size:0.9rem;">Click any drink to customize and add it to your order.</p>
       <div class="menu-layout">
         <div class="panel">
           <h4 class="panel-title">Signature Drinks</h4>
           <div class="group">
             <div class="group-head">Dr Pepper / Diet Dr Pepper</div>
-            <div class="item"><strong>Texan</strong><span>Vanilla, Coconut Cream</span></div>
-            <div class="item"><strong>The OG</strong><span>Coconut</span></div>
-            <div class="item"><strong>Ms Peachy</strong><span>Vanilla, Peach, Vanilla Cream</span></div>
-            <div class="item"><strong>Bleed Green</strong><span>Raspberry Puree, Coconut Cream</span></div>
-            <div class="item"><strong>Harvey’s Secret</strong><span>Coconut, Pineapple, Vanilla Cream</span></div>
+            <div class="item" data-drink="Texan" data-desc="Vanilla, Coconut Cream" data-base="Dr Pepper">
+              <div class="item-info"><strong>Texan</strong><span>Vanilla, Coconut Cream</span></div>
+              <button class="item-add-btn" aria-label="Add Texan">+</button>
+            </div>
+            <div class="item" data-drink="The OG" data-desc="Coconut" data-base="Dr Pepper">
+              <div class="item-info"><strong>The OG</strong><span>Coconut</span></div>
+              <button class="item-add-btn" aria-label="Add The OG">+</button>
+            </div>
+            <div class="item" data-drink="Ms Peachy" data-desc="Vanilla, Peach, Vanilla Cream" data-base="Dr Pepper">
+              <div class="item-info"><strong>Ms Peachy</strong><span>Vanilla, Peach, Vanilla Cream</span></div>
+              <button class="item-add-btn" aria-label="Add Ms Peachy">+</button>
+            </div>
+            <div class="item" data-drink="Bleed Green" data-desc="Raspberry Puree, Coconut Cream" data-base="Dr Pepper">
+              <div class="item-info"><strong>Bleed Green</strong><span>Raspberry Puree, Coconut Cream</span></div>
+              <button class="item-add-btn" aria-label="Add Bleed Green">+</button>
+            </div>
+            <div class="item" data-drink="Harvey's Secret" data-desc="Coconut, Pineapple, Vanilla Cream" data-base="Dr Pepper">
+              <div class="item-info"><strong>Harvey&#39;s Secret</strong><span>Coconut, Pineapple, Vanilla Cream</span></div>
+              <button class="item-add-btn" aria-label="Add Harvey's Secret">+</button>
+            </div>
           </div>
           <div class="group">
             <div class="group-head">Coke / Diet Coke</div>
-            <div class="item"><strong>The McCann</strong><span>Fresh Lime, Coconut</span></div>
-            <div class="item"><strong>Beachy</strong><span>Raspberry, Peach, Vanilla Cream</span></div>
-            <div class="item"><strong>Peaches and Limes</strong><span>Fresh Lime, Peach, Pineapple, Coconut Cream</span></div>
+            <div class="item" data-drink="The McCann" data-desc="Fresh Lime, Coconut" data-base="Coke">
+              <div class="item-info"><strong>The McCann</strong><span>Fresh Lime, Coconut</span></div>
+              <button class="item-add-btn" aria-label="Add The McCann">+</button>
+            </div>
+            <div class="item" data-drink="Beachy" data-desc="Raspberry, Peach, Vanilla Cream" data-base="Coke">
+              <div class="item-info"><strong>Beachy</strong><span>Raspberry, Peach, Vanilla Cream</span></div>
+              <button class="item-add-btn" aria-label="Add Beachy">+</button>
+            </div>
+            <div class="item" data-drink="Peaches and Limes" data-desc="Fresh Lime, Peach, Pineapple, Coconut Cream" data-base="Coke">
+              <div class="item-info"><strong>Peaches and Limes</strong><span>Fresh Lime, Peach, Pineapple, Coconut Cream</span></div>
+              <button class="item-add-btn" aria-label="Add Peaches and Limes">+</button>
+            </div>
           </div>
           <div class="group">
             <div class="group-head">Sprite</div>
-            <div class="item"><strong>Shark Bite</strong><span>Blue Raspberry, Gummy Shark</span></div>
-            <div class="item"><strong>Hula Harvey</strong><span>Mango, Pineapple, Strawberry, Coconut Cream</span></div>
-            <div class="item"><strong>High Tide</strong><span>Raspberry Puree, Fresh Lime</span></div>
-            <div class="item"><strong>Watermelon Rush</strong><span>Watermelon, Mango, Coconut Cream</span></div>
-            <div class="item"><strong>Dawg Pound</strong><span>Strawberry Puree, Mango Puree</span></div>
+            <div class="item" data-drink="Shark Bite" data-desc="Blue Raspberry, Gummy Shark" data-base="Sprite">
+              <div class="item-info"><strong>Shark Bite</strong><span>Blue Raspberry, Gummy Shark</span></div>
+              <button class="item-add-btn" aria-label="Add Shark Bite">+</button>
+            </div>
+            <div class="item" data-drink="Hula Harvey" data-desc="Mango, Pineapple, Strawberry, Coconut Cream" data-base="Sprite">
+              <div class="item-info"><strong>Hula Harvey</strong><span>Mango, Pineapple, Strawberry, Coconut Cream</span></div>
+              <button class="item-add-btn" aria-label="Add Hula Harvey">+</button>
+            </div>
+            <div class="item" data-drink="High Tide" data-desc="Raspberry Puree, Fresh Lime" data-base="Sprite">
+              <div class="item-info"><strong>High Tide</strong><span>Raspberry Puree, Fresh Lime</span></div>
+              <button class="item-add-btn" aria-label="Add High Tide">+</button>
+            </div>
+            <div class="item" data-drink="Watermelon Rush" data-desc="Watermelon, Mango, Coconut Cream" data-base="Sprite">
+              <div class="item-info"><strong>Watermelon Rush</strong><span>Watermelon, Mango, Coconut Cream</span></div>
+              <button class="item-add-btn" aria-label="Add Watermelon Rush">+</button>
+            </div>
+            <div class="item" data-drink="Dawg Pound" data-desc="Strawberry Puree, Mango Puree" data-base="Sprite">
+              <div class="item-info"><strong>Dawg Pound</strong><span>Strawberry Puree, Mango Puree</span></div>
+              <button class="item-add-btn" aria-label="Add Dawg Pound">+</button>
+            </div>
           </div>
         </div>
 
         <div class="panel">
           <h4 class="panel-title">Build Your Own</h4>
           <div class="group">
-            <div class="group-head">Syrups</div>
-            <div class="chip-list">
-              <div class="chip">Blue Raspberry</div><div class="chip">Raspberry</div>
-              <div class="chip">Strawberry</div><div class="chip">Peach</div>
-              <div class="chip">Watermelon</div><div class="chip">Pineapple</div>
-              <div class="chip">Coconut</div><div class="chip">SF Coconut</div>
-              <div class="chip">Vanilla</div><div class="chip">SF Vanilla</div>
+            <div class="group-head">Choose Your Base</div>
+            <div class="chip-list" id="byo-bases">
+              <div class="chip base-chip" data-base="Dr Pepper">Dr Pepper</div>
+              <div class="chip base-chip" data-base="Diet Dr Pepper">Diet Dr Pepper</div>
+              <div class="chip base-chip" data-base="Coke">Coke</div>
+              <div class="chip base-chip" data-base="Diet Coke">Diet Coke</div>
+              <div class="chip base-chip" data-base="Sprite">Sprite</div>
             </div>
           </div>
           <div class="group">
-            <div class="group-head">Creams & Purees</div>
-            <div class="chip-list">
-              <div class="chip">Coconut Cream</div><div class="chip">Vanilla Cream</div>
-              <div class="chip">Fresh Lime</div><div class="chip">Raspberry Puree</div>
-              <div class="chip">Mango Puree</div><div class="chip">Strawberry Puree</div>
+            <div class="group-head">Syrups</div>
+            <div class="chip-list" id="byo-addons-syrups">
+              <div class="chip" data-addon="Blue Raspberry">Blue Raspberry</div>
+              <div class="chip" data-addon="Raspberry">Raspberry</div>
+              <div class="chip" data-addon="Strawberry">Strawberry</div>
+              <div class="chip" data-addon="Peach">Peach</div>
+              <div class="chip" data-addon="Watermelon">Watermelon</div>
+              <div class="chip" data-addon="Pineapple">Pineapple</div>
+              <div class="chip" data-addon="Coconut">Coconut</div>
+              <div class="chip" data-addon="SF Coconut">SF Coconut</div>
+              <div class="chip" data-addon="Vanilla">Vanilla</div>
+              <div class="chip" data-addon="SF Vanilla">SF Vanilla</div>
             </div>
-            <div class="price-tag">Add-ons: 40¢ each</div>
           </div>
-          <div style="background:var(--green-050); padding:20px; border-radius:20px;">
-            <h5 style="color:var(--green-800)">Custom Mixes</h5>
-            <p style="font-size:0.85rem; color:var(--muted);">Pick your base soda and layer any combination of flavors above!</p>
+          <div class="group">
+            <div class="group-head">Creams &amp; Purees</div>
+            <div class="chip-list" id="byo-addons-creams">
+              <div class="chip" data-addon="Coconut Cream">Coconut Cream</div>
+              <div class="chip" data-addon="Vanilla Cream">Vanilla Cream</div>
+              <div class="chip" data-addon="Fresh Lime">Fresh Lime</div>
+              <div class="chip" data-addon="Raspberry Puree">Raspberry Puree</div>
+              <div class="chip" data-addon="Mango Puree">Mango Puree</div>
+              <div class="chip" data-addon="Strawberry Puree">Strawberry Puree</div>
+            </div>
+            <div class="price-tag">Add-ons: 40&#162; each</div>
+          </div>
+          <div class="byo-total">
+            <div>
+              <div style="font-size:0.8rem; color:var(--muted);">BYO Total</div>
+              <div class="byo-total-price" id="byo-price">$0.00</div>
+            </div>
+            <button class="btn-green" id="byo-add-btn" disabled>Add to Tray</button>
           </div>
         </div>
       </div>
@@ -217,7 +517,7 @@
         <div class="request-visual">
           <h2>Got a new flavor idea?</h2>
           <p>We want to hear your creative soda combinations!</p>
-          <a href="https://forms.gle/VJYMMPbKk6qtJPB19" target="_blank" class="btn-white">Submit Request</a>
+          <a href="https://forms.gle/VJYMMPbKk6qtJPB19" target="_blank" rel="noopener noreferrer" class="btn-white">Submit Request</a>
         </div>
         <div style="padding:40px; display:flex; flex-direction:column; justify-content:center;">
           <h4 style="color:var(--green-900);">Help Grow Our Menu</h4>
@@ -229,24 +529,24 @@
     <section id="hours" class="container">
       <div class="hours-grid">
         <div class="hour-box"><h5>SCHOOL</h5><p>Hillcrest High</p></div>
-        <div class="hour-box"><h5>DAYS</h5><p>Tue & Wed</p></div>
+        <div class="hour-box"><h5>DAYS</h5><p>Tue &amp; Wed</p></div>
         <div class="hour-box"><h5>PEAK</h5><p>2nd Period</p></div>
       </div>
     </section>
   </main>
 
   <footer style="padding:40px 0; text-align:center; border-top:1px solid rgba(0,0,0,0.05); color:var(--muted);">
-    <p>&copy; 2026 Husky Sips · Hillcrest High Business Club</p>
+    <p>&copy; 2026 Husky Sips &middot; Hillcrest High Business Club</p>
   </footer>
 
   <script>
-    // FULL DRINK DATA FOR THE FEATURED SECTION
-    const drinks = [
+    // ===================== DRINK DATA =====================
+    var drinks = [
       { name: "Texan", desc: "Vanilla, Coconut Cream", note: "Classic combo.", tag: "Dr Pepper Base", img: "https://images.unsplash.com/photo-1543253687-c931c8e01820?auto=format&fit=crop&w=500" },
       { name: "The OG", desc: "Coconut", note: "Simple and smooth.", tag: "Dr Pepper Base", img: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=500" },
       { name: "Ms Peachy", desc: "Vanilla, Peach, Vanilla Cream", note: "Sweet and creamy.", tag: "Dr Pepper Base", img: "https://images.unsplash.com/photo-1595981267035-7b04ca84a82d?auto=format&fit=crop&w=500" },
       { name: "Bleed Green", desc: "Raspberry Puree, Coconut Cream", note: "The Hillcrest original.", tag: "Student Favorite", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQk40KW-HiTJknL-EVvKYcIBzPQPPFqJEI60w&s" },
-      { name: "Harvey’s Secret", desc: "Coconut, Pineapple, Vanilla Cream", note: "Tropical vibes.", tag: "Dr Pepper Base", img: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=500" },
+      { name: "Harvey's Secret", desc: "Coconut, Pineapple, Vanilla Cream", note: "Tropical vibes.", tag: "Dr Pepper Base", img: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=500" },
       { name: "The McCann", desc: "Fresh Lime, Coconut", note: "Citrus meets coconut.", tag: "Coke Base", img: "https://images.unsplash.com/photo-1554866585-cd94860890b7?auto=format&fit=crop&w=500" },
       { name: "Beachy", desc: "Raspberry, Peach, Vanilla Cream", note: "Summer in a cup.", tag: "Coke Base", img: "https://images.unsplash.com/photo-1499638673689-79a0b5115d87?auto=format&fit=crop&w=500" },
       { name: "Peaches and Limes", desc: "Fresh Lime, Peach, Pineapple, Coconut Cream", note: "Tangy and tropical.", tag: "Coke Base", img: "https://images.unsplash.com/photo-1536935338788-846bb9981813?auto=format&fit=crop&w=500" },
@@ -257,17 +557,301 @@
       { name: "Dawg Pound", desc: "Strawberry Puree, Mango Puree", note: "Double fruit blast.", tag: "Sprite Base", img: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=500" }
     ];
 
-    /** * CHANGE FEATURED DRINK HERE (0-12) */
-    let featuredIndex = 9; // 3 is Bleed Green
+    var ADDON_PRICE = 0.40;
 
-    document.addEventListener('DOMContentLoaded', () => {
-      const d = drinks[featuredIndex];
+    /** CHANGE FEATURED DRINK HERE (0-12) */
+    var featuredIndex = 9;
+
+    // ===================== CART STATE =====================
+    var cart = [];
+    var modalDrink = null;
+    var modalSelectedBase = '';
+    var modalSelectedAddons = [];
+
+    // ===================== FEATURED DRINK =====================
+    document.addEventListener('DOMContentLoaded', function() {
+      var d = drinks[featuredIndex];
       document.getElementById('feat-name').textContent = d.name;
       document.getElementById('feat-desc').textContent = d.desc;
       document.getElementById('feat-note').textContent = d.note;
       document.getElementById('feat-tag').textContent = d.tag;
-      document.getElementById('feat-img').style.backgroundImage = `url('${d.img}')`;
+      document.getElementById('feat-img').style.backgroundImage = "url('" + d.img + "')";
+
+      initMenuItems();
+      initBYO();
+      initTray();
+      initModal();
+      initReceipt();
     });
+
+    // ===================== MENU ITEMS =====================
+    function initMenuItems() {
+      document.querySelectorAll('.item[data-drink]').forEach(function(el) {
+        el.addEventListener('click', function(e) {
+          if (e.target.classList.contains('item-add-btn')) return;
+          openModal(el.dataset.drink, el.dataset.desc, el.dataset.base);
+        });
+        var btn = el.querySelector('.item-add-btn');
+        if (btn) {
+          btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            openModal(el.dataset.drink, el.dataset.desc, el.dataset.base);
+          });
+        }
+      });
+    }
+
+    // ===================== MODAL =====================
+    var ALL_BASES = ['Dr Pepper', 'Diet Dr Pepper', 'Coke', 'Diet Coke', 'Sprite'];
+    var ALL_ADDONS = [
+      'Blue Raspberry','Raspberry','Strawberry','Peach','Watermelon','Pineapple',
+      'Coconut','SF Coconut','Vanilla','SF Vanilla',
+      'Coconut Cream','Vanilla Cream','Fresh Lime','Raspberry Puree','Mango Puree','Strawberry Puree'
+    ];
+
+    function openModal(name, desc, defaultBase) {
+      modalDrink = { name: name, desc: desc };
+      modalSelectedBase = defaultBase || '';
+      modalSelectedAddons = [];
+
+      document.getElementById('modal-drink-name').textContent = name;
+      document.getElementById('modal-drink-desc').textContent = desc;
+
+      var basesEl = document.getElementById('modal-bases');
+      basesEl.innerHTML = '';
+      ALL_BASES.forEach(function(base) {
+        var chip = document.createElement('div');
+        chip.className = 'chip base-chip' + (base === modalSelectedBase ? ' selected' : '');
+        chip.textContent = base;
+        chip.addEventListener('click', function() {
+          modalSelectedBase = base;
+          basesEl.querySelectorAll('.chip').forEach(function(c) { c.classList.remove('selected'); });
+          chip.classList.add('selected');
+          updateModalPrice();
+        });
+        basesEl.appendChild(chip);
+      });
+
+      var addonsEl = document.getElementById('modal-addons');
+      addonsEl.innerHTML = '';
+      ALL_ADDONS.forEach(function(addon) {
+        var chip = document.createElement('div');
+        chip.className = 'chip';
+        chip.textContent = addon;
+        chip.addEventListener('click', function() {
+          if (chip.classList.contains('selected')) {
+            chip.classList.remove('selected');
+            modalSelectedAddons = modalSelectedAddons.filter(function(a) { return a !== addon; });
+          } else {
+            chip.classList.add('selected');
+            modalSelectedAddons.push(addon);
+          }
+          updateModalPrice();
+        });
+        addonsEl.appendChild(chip);
+      });
+
+      updateModalPrice();
+      document.getElementById('modal-overlay').classList.add('open');
+    }
+
+    function updateModalPrice() {
+      var total = modalSelectedAddons.length * ADDON_PRICE;
+      document.getElementById('modal-price').textContent = 'Add-ons: $' + total.toFixed(2);
+    }
+
+    function initModal() {
+      document.getElementById('modal-cancel').addEventListener('click', closeModal);
+      document.getElementById('modal-overlay').addEventListener('click', function(e) {
+        if (e.target === document.getElementById('modal-overlay')) closeModal();
+      });
+      document.getElementById('modal-confirm').addEventListener('click', function() {
+        if (!modalDrink) return;
+        var price = modalSelectedAddons.length * ADDON_PRICE;
+        var detail = modalSelectedBase
+          ? (modalSelectedBase + (modalSelectedAddons.length ? ' + ' + modalSelectedAddons.join(', ') : ''))
+          : (modalSelectedAddons.length ? modalSelectedAddons.join(', ') : modalDrink.desc);
+        addToCart(modalDrink.name, detail, price);
+        closeModal();
+      });
+    }
+
+    function closeModal() {
+      document.getElementById('modal-overlay').classList.remove('open');
+      modalDrink = null;
+      modalSelectedBase = '';
+      modalSelectedAddons = [];
+    }
+
+    // ===================== BUILD YOUR OWN =====================
+    var byoSelectedBase = '';
+    var byoSelectedAddons = [];
+
+    function initBYO() {
+      document.querySelectorAll('#byo-bases .chip').forEach(function(chip) {
+        chip.addEventListener('click', function() {
+          byoSelectedBase = chip.dataset.base;
+          document.querySelectorAll('#byo-bases .chip').forEach(function(c) { c.classList.remove('selected'); });
+          chip.classList.add('selected');
+          updateBYO();
+        });
+      });
+
+      ['#byo-addons-syrups', '#byo-addons-creams'].forEach(function(selector) {
+        document.querySelectorAll(selector + ' .chip').forEach(function(chip) {
+          chip.addEventListener('click', function() {
+            if (chip.classList.contains('selected')) {
+              chip.classList.remove('selected');
+              byoSelectedAddons = byoSelectedAddons.filter(function(a) { return a !== chip.dataset.addon; });
+            } else {
+              chip.classList.add('selected');
+              byoSelectedAddons.push(chip.dataset.addon);
+            }
+            updateBYO();
+          });
+        });
+      });
+
+      document.getElementById('byo-add-btn').addEventListener('click', function() {
+        if (!byoSelectedBase) return;
+        var price = byoSelectedAddons.length * ADDON_PRICE;
+        var detail = byoSelectedAddons.length ? byoSelectedAddons.join(', ') : 'No add-ons';
+        addToCart('Custom ' + byoSelectedBase, detail, price);
+        byoSelectedBase = '';
+        byoSelectedAddons = [];
+        document.querySelectorAll('#byo-bases .chip, #byo-addons-syrups .chip, #byo-addons-creams .chip')
+          .forEach(function(c) { c.classList.remove('selected'); });
+        updateBYO();
+      });
+    }
+
+    function updateBYO() {
+      var price = byoSelectedAddons.length * ADDON_PRICE;
+      document.getElementById('byo-price').textContent = '$' + price.toFixed(2);
+      document.getElementById('byo-add-btn').disabled = !byoSelectedBase;
+    }
+
+    // ===================== CART =====================
+    function addToCart(name, detail, price) {
+      cart.push({ name: name, detail: detail, price: price, id: Date.now() + Math.random() });
+      renderTray();
+      var btn = document.getElementById('open-tray');
+      btn.style.transform = 'scale(1.15)';
+      setTimeout(function() { btn.style.transform = ''; }, 200);
+    }
+
+    function removeFromCart(id) {
+      cart = cart.filter(function(item) { return item.id !== id; });
+      renderTray();
+    }
+
+    function getCartTotal() {
+      return cart.reduce(function(sum, item) { return sum + item.price; }, 0);
+    }
+
+    function renderTray() {
+      var count = cart.length;
+      document.getElementById('cart-count').textContent = count;
+
+      var itemsEl = document.getElementById('tray-items');
+      var total = getCartTotal();
+      document.getElementById('tray-total').textContent = '$' + total.toFixed(2);
+
+      var receiptBtn = document.getElementById('btn-receipt');
+      receiptBtn.disabled = count === 0;
+
+      if (count === 0) {
+        itemsEl.innerHTML = '<div class="tray-empty">Your tray is empty.<br>Click any drink to add it!</div>';
+        return;
+      }
+
+      itemsEl.innerHTML = '';
+      cart.forEach(function(item) {
+        var div = document.createElement('div');
+        div.className = 'tray-item';
+        div.innerHTML =
+          '<div class="tray-item-info">' +
+            '<div class="tray-item-name">' + escapeHtml(item.name) + '</div>' +
+            '<div class="tray-item-detail">' + escapeHtml(item.detail) + '</div>' +
+          '</div>' +
+          '<span class="tray-item-price">$' + item.price.toFixed(2) + '</span>' +
+          '<button class="tray-item-remove" aria-label="Remove ' + escapeHtml(item.name) + '">\u2715</button>';
+        div.querySelector('.tray-item-remove').addEventListener('click', function() { removeFromCart(item.id); });
+        itemsEl.appendChild(div);
+      });
+    }
+
+    function initTray() {
+      document.getElementById('open-tray').addEventListener('click', function() {
+        document.getElementById('tray-overlay').classList.add('open');
+      });
+      document.getElementById('close-tray').addEventListener('click', function() {
+        document.getElementById('tray-overlay').classList.remove('open');
+      });
+      document.getElementById('tray-overlay').addEventListener('click', function(e) {
+        if (e.target === document.getElementById('tray-overlay'))
+          document.getElementById('tray-overlay').classList.remove('open');
+      });
+      document.getElementById('btn-clear').addEventListener('click', function() {
+        cart = [];
+        renderTray();
+      });
+      document.getElementById('btn-receipt').addEventListener('click', function() {
+        document.getElementById('tray-overlay').classList.remove('open');
+        openReceipt();
+      });
+    }
+
+    // ===================== RECEIPT =====================
+    function openReceipt() {
+      var now = new Date();
+      document.getElementById('receipt-date').textContent =
+        now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) +
+        ' \u00B7 ' +
+        now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+      var itemsEl = document.getElementById('receipt-items');
+      itemsEl.innerHTML = '';
+      cart.forEach(function(item) {
+        var row = document.createElement('div');
+        row.innerHTML =
+          '<div class="receipt-item">' +
+            '<span>' + escapeHtml(item.name) + '</span>' +
+            '<span>$' + item.price.toFixed(2) + '</span>' +
+          '</div>' +
+          '<div class="receipt-item-detail">' + escapeHtml(item.detail) + '</div>';
+        itemsEl.appendChild(row);
+      });
+
+      document.getElementById('receipt-total-price').textContent = '$' + getCartTotal().toFixed(2);
+      document.getElementById('receipt-overlay').classList.add('open');
+    }
+
+    function initReceipt() {
+      document.getElementById('btn-close-receipt').addEventListener('click', function() {
+        document.getElementById('receipt-overlay').classList.remove('open');
+      });
+      document.getElementById('receipt-overlay').addEventListener('click', function(e) {
+        if (e.target === document.getElementById('receipt-overlay'))
+          document.getElementById('receipt-overlay').classList.remove('open');
+      });
+      document.getElementById('btn-screenshot').addEventListener('click', function() {
+        var actions = document.querySelector('#receipt-content .receipt-actions');
+        actions.style.display = 'none';
+        window.print();
+        actions.style.display = '';
+      });
+    }
+
+    // ===================== UTILITY =====================
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
   </script>
 </body>
 </html>
