@@ -312,7 +312,7 @@
         <div class="modal-section-label">Add-ons <span style="font-weight:400; color:var(--muted);">(40&#162; each)</span></div>
         <div class="modal-addons" id="modal-addons"></div>
       </div>
-      <div class="modal-price" id="modal-price">Add-ons: $0.00</div>
+      <div class="modal-price" id="modal-price">Total: $2.40</div>
       <div class="modal-footer">
         <button class="btn-cancel" id="modal-cancel">Cancel</button>
         <button class="btn-confirm" id="modal-confirm">Add to Tray</button>
@@ -481,7 +481,7 @@
               <div class="chip" data-addon="Mango Puree">Mango Puree</div>
               <div class="chip" data-addon="Strawberry Puree">Strawberry Puree</div>
             </div>
-            <div class="price-tag">Add-ons: 40&#162; each</div>
+            <div class="price-tag">Base: $2.40 &bull; Add-ons: 40&#162; each</div>
           </div>
           <div class="byo-total">
             <div>
@@ -557,6 +557,7 @@
       { name: "Dawg Pound", desc: "Strawberry Puree, Mango Puree", note: "Double fruit blast.", tag: "Sprite Base", img: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=500" }
     ];
 
+    var BASE_PRICE = 2.40;
     var ADDON_PRICE = 0.40;
 
     /** CHANGE FEATURED DRINK HERE (0-12) */
@@ -657,8 +658,8 @@
     }
 
     function updateModalPrice() {
-      var total = modalSelectedAddons.length * ADDON_PRICE;
-      document.getElementById('modal-price').textContent = 'Add-ons: $' + total.toFixed(2);
+      var total = BASE_PRICE + modalSelectedAddons.length * ADDON_PRICE;
+      document.getElementById('modal-price').textContent = 'Total: $' + total.toFixed(2);
     }
 
     function initModal() {
@@ -668,7 +669,7 @@
       });
       document.getElementById('modal-confirm').addEventListener('click', function() {
         if (!modalDrink) return;
-        var price = modalSelectedAddons.length * ADDON_PRICE;
+        var price = BASE_PRICE + modalSelectedAddons.length * ADDON_PRICE;
         var detail = modalSelectedBase
           ? (modalSelectedBase + (modalSelectedAddons.length ? ' + ' + modalSelectedAddons.join(', ') : ''))
           : (modalSelectedAddons.length ? modalSelectedAddons.join(', ') : modalDrink.desc);
@@ -715,7 +716,7 @@
 
       document.getElementById('byo-add-btn').addEventListener('click', function() {
         if (!byoSelectedBase) return;
-        var price = byoSelectedAddons.length * ADDON_PRICE;
+        var price = BASE_PRICE + byoSelectedAddons.length * ADDON_PRICE;
         var detail = byoSelectedAddons.length ? byoSelectedAddons.join(', ') : 'No add-ons';
         addToCart('Custom ' + byoSelectedBase, detail, price);
         byoSelectedBase = '';
@@ -727,7 +728,7 @@
     }
 
     function updateBYO() {
-      var price = byoSelectedAddons.length * ADDON_PRICE;
+      var price = BASE_PRICE + byoSelectedAddons.length * ADDON_PRICE;
       document.getElementById('byo-price').textContent = '$' + price.toFixed(2);
       document.getElementById('byo-add-btn').disabled = !byoSelectedBase;
     }
