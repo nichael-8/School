@@ -1,37 +1,94 @@
-1. Hero Background Photo (Line 50)
-Location: Look for the .hero-card class in the <style> section.
+Markdown
+🥤 Husky Sips POS Web App
+Hillcrest High School Business Club
 
-Action: Replace the URL inside url("...") with your new school or background photo link.
+A lightweight, client-side Point of Sale (POS) and drink customization interface built for student-run beverage operations.
 
-Note: This is a CSS background, so ensure you keep the linear-gradient part if you want the text to remain readable over the photo.
+## 📖 Table of Contents
+1. [Overview](#-overview)
+2. [User Operations](#-user-operations)
+3. [Developer Guide](#-developer-guide)
+4. [Customization Logic](#-customization-logic)
+5. [Troubleshooting](#-troubleshooting)
 
-2. Changing the Featured Drink (Line 564)
-Location: Scroll to the very bottom of the script. Look for let featuredIndex = 3;.
+---
 
-Action: Change the number to any value between 0 and 12 to instantly swap the drink shown at the top of the page.
+## 🌟 Overview
+Husky Sips is a single-page application (SPA) that allows baristas and customers to:
+* Browse a curated signature menu.
+* Build custom soda combinations with real-time price calculation.
+* Generate a digital, timestamped receipt for order verification.
+* Capture orders via a mobile-friendly "Screenshot" mode.
 
-0 = Texan, 3 = Bleed Green, 8 = Shark Bite, etc.
+---
 
-3. Editing Drink Details & Photos (Lines 207–230)
-Location: Inside the const drinks = [...] array in the <script> tag.
+## 🕹️ User Operations
 
-Action: You can update the name, desc (description), note, tag, or img (photo URL) for any of the 13 signature drinks.
+### Creating an Order
+1. **Signature Drinks:** Click any item in the "Menu" or "Favorites" section to add it directly to the tray.
+2. **Custom Drinks (BYO):** - Select **one** Soda Base (required).
+   - Select any number of **Add-ons** (syrups/creams).
+   - Click **Add to Tray**.
+3. **Reviewing:** Click the 🛒 **Order Tray** in the header to view items, remove mistakes, or clear the order.
 
-Example: To change the Bleed Green photo, find the line starting with { name: "Bleed Green" and replace the URL in the img: field.
+### Checkout Process
+1. Open the Order Tray and click **Generate Receipt**.
+2. A receipt modal will appear with a unique timestamp.
+3. The customer should show this screen to the barista for drink preparation and payment.
+4. Click **Screenshot** to save a copy to the device gallery.
 
-4. Gallery Photos (Lines 149, 153, 157)
-Location: Inside the <section id="gallery"> area.
+---
 
-Action: Find the style="background-image:url('...')" attribute for each of the three gallery cards and replace the URL with your new photo path.
+## 🛠️ Developer Guide
 
-5. Request Form Link (Line 167)
-Location: Inside the <section id="request"> area.
+### 📍 Key File Structure
+* **CSS Variables (`:root`):** Manage the brand colors (Greens and Creams) and border radiuses.
+* **JavaScript Arrays:** Manage the actual "data" of the shop.
 
-Action: Find the <a> tag and replace the href="https://forms.gle/..." URL with your new Google Form link.
+### 💵 Editing Prices
+To update costs, locate the following variables in the `<script>` section:
 
-Note: There is also a link in the top navigation bar at Line 101 that you should update to match.
+| Variable | Description |
+| :--- | :--- |
+| `basePrice` | The starting cost for a "Build Your Own" soda. |
+| `addonPrice` | The cost added for every flavor chip selected. |
+| `menuItems` | An array of objects where you can change `price` for signature drinks. |
 
-6. School Hours & Info (Lines 179–181)
-Location: Inside the <section id="hours"> area.
+### 🍹 Adding New Menu Items
+Add a new object to the `menuItems` array in the script:
+```javascript
+{ id: 6, name: "New Drink Name", price: 3.50, desc: "Ingredients list" }
+Then, add the corresponding HTML button in the Menu Layout section:
 
-Action: Update the text inside the <p> tags if the "Open Days" or "Peak Time" ever changes.
+HTML
+<div class="item" onclick="addToTray(6)"> ... </div>
+🧊 Adding New Flavors (Add-ons)
+Simply add a string to the addons array. The UI will automatically generate a new clickable "chip" for that flavor:
+
+JavaScript
+const addons = ["Vanilla", "Coconut", "Strawberry", "Peach"];
+⚙️ Customization Logic
+The app uses a state-based logic to prevent errors:
+
+Validation: The "Add Custom Drink" button is disabled until a currentBase is selected.
+
+Math: Total Price = basePrice + (selectedAddons.length * addonPrice).
+
+Persistence: This app is volatile. Refreshing the browser will clear the current tray. This is intentional to prevent order carry-over between different customers.
+
+🆘 Troubleshooting
+Q: The images aren't loading!
+
+A: Ensure the device is connected to the internet. If the school's firewall blocks the image hosting domain, update the url() links in the CSS to point to local files.
+
+Q: The "Add to Tray" button is unresponsive.
+
+A: Ensure a Base Soda is highlighted. The app requires a base before it can calculate a custom drink.
+
+Q: The Receipt is showing the wrong time.
+
+A: The receipt uses the device's system time. Ensure the tablet or phone is set to the correct local time zone.
+
+📝 License & Credits
+Developed for the Hillcrest High School Business.
+Designed for educational and club-operational use.
