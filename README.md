@@ -5,7 +5,7 @@ Action: Replace the URL inside url("...") with your new school or background pho
 
 Note: This is a CSS background, so ensure you keep the linear-gradient part if you want the text to remain readable over the photo.
 
-2. Changing the Featured Drink (Line 233)
+2. Changing the Featured Drink (Line 564)
 Location: Scroll to the very bottom of the script. Look for let featuredIndex = 3;.
 
 Action: Change the number to any value between 0 and 12 to instantly swap the drink shown at the top of the page.
