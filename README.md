@@ -1,6 +1,6 @@
 Markdown
 🥤 Husky Sips POS Web App
-Hillcrest High School Business Club
+Hillcrest High School 
 
 A lightweight, client-side Point of Sale (POS) and drink customization interface built for student-run beverage operations.
 
@@ -91,4 +91,4 @@ A: The receipt uses the device's system time. Ensure the tablet or phone is set 
 
 📝 License & Credits
 Developed for the Hillcrest High School Business.
-Designed for educational and club-operational use.
+developed by michael bennett.
